@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, FormLabel, Button, TextareaAutosize, RadioGroup, FormControlLabel, Radio, Checkbox, FormControl, FormGroup } from "@mui/material";
 import { useFormContext, Controller, useFieldArray } from "react-hook-form";
-import Select from "react-select";
-import { drugNames } from "../../drugNames";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3/AdapterDateFnsV3";
@@ -10,13 +8,12 @@ import { ru } from "date-fns/locale/ru";
 
 interface FormData {
   sideEffects: {
-    // drugName: { value: string; label: string } | null;
-    sideEffectDescription: string;
-    sideEffectStartDate: Date | null;
-    sideEffectStatus: string;
-    sideEffectEndDate: Date | null;
+    sideEffectDescription: string; // Пожалуйста опишите побочный эффект
+    sideEffectStartDate: Date | null; // Дата начала побочного эффекта?
+    sideEffectStatus: string; // Каков статус побочного эффекта?
+    sideEffectEndDate: Date | null; // Если разрешился, укажите дату окончания
   }[];
-  consequences: Record<string, boolean>;
+  consequences: Record<string, boolean>; // Потребовалась госпитализация?
 }
 
 export const Step4: React.FC = () => {

@@ -7,15 +7,15 @@ import 'react-phone-input-2/lib/style.css'
 import { useEffect } from "react";
 
 interface FormData {
-  isCommunication: string;
-  contactMethod: "email" | "phone";
-  phone: string;
-  email: string;
-  isPatient: string;
-  agent: string;
-  country: {};
-  isLundbeckDrugPurchase: string;
-  sideEffectCountry: {};
+  isCommunication: string; // Даете ли Вы согласие на то, чтобы сотрудник компании Лундбек связался с вами, используя информацию из этой формы, если это необходимо?
+  contactMethod: "email" | "phone"; // Способ связи
+  phone: string; // Телефон
+  email: string; // Email
+  isPatient: string; // Я - пациент
+  agent: string; // Связь с пациентом
+  country: {}; // Страна
+  isLundbeckDrugPurchase: string; // Препарат компании Лундбек был приобретен в той же стране, где возник побочный эффект?
+  sideEffectCountry: {}; // Страна, в которой возник побочный эффект
 }
 
 export const Step1: React.FC = () => {

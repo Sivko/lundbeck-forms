@@ -9,15 +9,15 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3/AdapterDate
 import { ru } from "date-fns/locale/ru";
 
 interface FormData {
-  ateMedicine: string;
+  ateMedicine: string; // Принимал ли пациент другие препараты
   anyDrugs: {
-    name: string;
-    reason: string;
-    dose: string;
-    dateStart: Date | null;
-    isContinue: string;
-    additionalDrugs: string;
-    dateEnd: Date | null;
+    name: string; // Укажите название другого препарата, который принимал пациент
+    reason: string; // Укажите показание, по которому был назначен препарат Лундбек (причина назначения)
+    dose: string; // Ежедневная доза препарата (по возможности укажите единицы измерения)
+    dateStart: Date | null; // Дата начала приема препарата
+    isContinue: string; // Продолжается ли прием препарата на сегодняшний день?
+    additionalDrugs: string; // Принимал ли пациент дополнительный препарат, когда отмечался побочный эффект?
+    dateEnd: Date | null; // Когда был прекращен прием препарата?
   }[];
 }
 

@@ -18,6 +18,8 @@ import { Step4 } from "./components/steps/Step4";
 import { Step5 } from "./components/steps/Step5";
 import { Step6 } from "./components/steps/Step6";
 
+import dataToMessage, { DataToSend } from "./dataToMessage";
+
 const QuizForm: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
   const methods = useForm<FormData>({
@@ -38,8 +40,11 @@ const QuizForm: React.FC = () => {
 
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
-  const onSubmit = (data: FormData) => {
-    console.log("Отправленные данные:", data);
+  const onSubmit = async (data: FormData) => {
+    const dataJson = JSON.stringify(data);
+    const object = JSON.parse(dataJson) as DataToSend;
+    console.log("Отправленные данные:", dataToMessage(object));
+    
   };
 
   return (
@@ -77,10 +82,10 @@ const QuizForm: React.FC = () => {
         </form>
       </FormProvider>
 
-      <pre>
+      {/* <pre>
         <div className="text-red-200">{JSON.stringify(methods.formState.errors, null, 2)}</div>
         {JSON.stringify(allValues, null, 2)}
-      </pre>
+      </pre> */}
     </div>
   );
 };

@@ -15,15 +15,15 @@ import { useEffect } from "react";
 
 interface FormData {
   drugItems: {
-    drugName: {};
-    drugNumber: string;
-    purposeDrug: string;
-    periodicity: string;
-    dose: string;
-    customPeriodicity: string;
-    startDate: Date | null;
-    isContinuePurpose: string;
-    endDate: Date | null;
+    drugName: {}; // Название препарата
+    drugNumber: string; // Номер препарата
+    purposeDrug: string; // Укажите показание, по которому был назначен препарат Лундбек (причина назначения)
+    periodicity: string; // Как часто пациент получал препарат Лундбек
+    dose: string; // Дозировка
+    customPeriodicity: string; // Опишите, как часто принимался препарат Лундбек
+    startDate: Date | null; // Когда был начат прием препарата?
+    isContinuePurpose: string; // Продолжается ли прием препарата на текущий момент?
+    endDate: Date | null; // Когда был прекращен прием препарата?
   }[]
 }
 

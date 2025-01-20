@@ -7,14 +7,13 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3/AdapterDate
 import { ru } from "date-fns/locale/ru";
 
 interface FormData {
-  disease: string
+  disease: string // Хотели бы вы сообщить о каких-либо других заболеваниях/состояниях на момент возникновения побочного эффекта
   diseasesItems: {
-    name: string;
-    dateStart: Date | null;
-    status: string;
-    isTreatment: string;
-    treatmentDescription: string;
-    additionalDiseases: string;
+    name: string; // Другое заболевание/состояние
+    dateStart: Date | null; // Дата начала другого заболевания/состояния
+    status: string; // Статус другого заболевания/состояния
+    isTreatment: string; // Проводилось ли какое-либо лечение заболевания/состояния
+    treatmentDescription: string; // Если лечение проводилось, опишите его
   }[]
 }
 
@@ -35,7 +34,7 @@ export const Step6: React.FC = () => {
 
   useEffect(() => {
     if (fields.length === 0) {
-      append({ name: "", dateStart: null, status: "", isTreatment: "", treatmentDescription: "", additionalDiseases: "" }); // Добавляем первый обязательный элемент
+      append({ name: "", dateStart: null, status: "", isTreatment: "", treatmentDescription: ""}); // Добавляем первый обязательный элемент
     }
   }, []);
 
@@ -170,7 +169,7 @@ export const Step6: React.FC = () => {
       {disease === "Да" && <Button
         variant="contained"
         color="primary"
-        onClick={() => append({ name: "", dateStart: null, status: "", isTreatment: "", treatmentDescription: "", additionalDiseases: "" })}
+        onClick={() => append({ name: "", dateStart: null, status: "", isTreatment: "", treatmentDescription: ""})}
         style={{ marginTop: "20px" }}
       >
         Добавить заболевание/состояние

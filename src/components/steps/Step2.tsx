@@ -11,12 +11,12 @@ import { useEffect } from "react";
 
 
 interface FormData {
-  gender: string;
-  isPregnant: string;
-  dateOfBirth: Date | null;
-  weekOfBirth: number | null;
-  description: string;
-  age: number | string;
+  gender: string; // Пол
+  isPregnant: string; // Беременность
+  dateOfBirth: Date | null; // Дата родов
+  weekOfBirth: number | null; // Неделя родов
+  description: string; // Любая доступная информацию о результате или текущем статусе беременности
+  age: number | string; // Возраст
 }
 
 export const Step2: React.FC = () => {
@@ -51,6 +51,7 @@ export const Step2: React.FC = () => {
       <Controller
         name="gender"
         control={control}
+        rules={{ required: "Выберите вариант" }}
         render={({ field, fieldState }) => (
           <>
             <FormLabel error={!!fieldState.error} id="gender">Пол пациента *</FormLabel>
