@@ -1,5 +1,5 @@
 # Устанавливаем базовый образ Node.js
-FROM node:16 AS build
+FROM node:18-alpine AS build
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
@@ -8,13 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # Устанавливаем зависимости
-RUN npm install
+RUN yarn install --frozen-lockfile
 
 # Копируем остальные файлы приложения
 COPY . .
 
 # Собираем React приложение
-RUN npm run build
+RUN yarn build
 
 # Устанавливаем образ для веб-сервера
 FROM nginx:alpine

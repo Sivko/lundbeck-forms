@@ -14,7 +14,7 @@ export interface DataToSend {
   weekOfBirth: number | null;
   description: string;
   age: number | string;
-  drugItems: {
+  drugItems?: {
     drugName: {};
     drugNumber: string;
     purposeDrug: string;
@@ -25,7 +25,7 @@ export interface DataToSend {
     isContinuePurpose: string;
     endDate: Date | null;
   }[];
-  sideEffects: {
+  sideEffects?: {
     sideEffectDescription: string;
     sideEffectStartDate: Date | null;
     sideEffectStatus: string;
@@ -33,7 +33,7 @@ export interface DataToSend {
   }[];
   consequences: Record<string, boolean>;
   ateMedicine: string;
-  anyDrugs: {
+  anyDrugs?: {
     name: string;
     reason: string;
     dose: string;
@@ -43,7 +43,7 @@ export interface DataToSend {
     dateEnd: Date | null;
   }[];
   disease: string;
-  diseasesItems: {
+  diseasesItems?: {
     name: string;
     dateStart: Date | null;
     status: string;
@@ -53,88 +53,88 @@ export interface DataToSend {
 }
 
 export default function generateEmailContent(data: DataToSend): string {
-  const drugItemsContent = data.drugItems
-    .map(
+  const drugItemsContent = data?.drugItems
+    ?.map(
       (item, index) => `
-    Препарат ${index + 1}:
-      - Название: ${item.drugName ? JSON.stringify(item.drugName) : "не указано"}
-      - Номер: ${item.drugNumber || "не указано"}
-      - Показание: ${item.purposeDrug || "не указано"}
-      - Периодичность: ${item.periodicity} (${item.customPeriodicity || "не указано"})
-      - Дозировка: ${item.dose || "не указано"}
-      - Начало приема: ${item.startDate || "не указано"}
-      - Продолжается ли прием: ${item.isContinuePurpose || "не указано"}
-      - Дата окончания: ${item.endDate || "не указано"}`
+    Препарат ${index + 1}: <br />
+      - Название: ${item.drugName ? JSON.stringify(item.drugName) : "не указано"} <br />
+      - Номер: ${item.drugNumber || "не указано"} <br />
+      - Показание: ${item.purposeDrug || "не указано"} <br />
+      - Периодичность: ${item.periodicity} (${item.customPeriodicity || "не указано"}) <br />
+      - Дозировка: ${item.dose || "не указано"} <br />
+      - Начало приема: ${item.startDate || "не указано"} <br />
+      - Продолжается ли прием: ${item.isContinuePurpose || "не указано"} <br />
+      - Дата окончания: ${item.endDate || "не указано"} <br />`
     )
-    .join("\n");
+    .join("<br />");
 
-  const sideEffectsContent = data.sideEffects
-    .map(
+  const sideEffectsContent = data?.sideEffects
+    ?.map(
       (effect, index) => `
-    Побочный эффект ${index + 1}:
-      - Описание: ${effect.sideEffectDescription || "не указано"}
-      - Дата начала: ${effect.sideEffectStartDate || "не указано"}
-      - Статус: ${effect.sideEffectStatus || "не указано"}
-      - Дата окончания: ${effect.sideEffectEndDate || "не указано"}`
+    Побочный эффект ${index + 1}: <br />
+      - Описание: ${effect.sideEffectDescription || "не указано"} <br />
+      - Дата начала: ${effect.sideEffectStartDate || "не указано"} <br />
+      - Статус: ${effect.sideEffectStatus || "не указано"} <br />
+      - Дата окончания: ${effect.sideEffectEndDate || "не указано"} <br />`
     )
-    .join("\n");
+    .join("<br />");
 
-  const anyDrugsContent = data.anyDrugs
-    .map(
+  const anyDrugsContent = data?.anyDrugs
+    ?.map(
       (drug, index) => `
-    Другой препарат ${index + 1}:
-      - Название: ${drug.name || "не указано"}
-      - Показание: ${drug.reason || "не указано"}
-      - Доза: ${drug.dose || "не указано"}
-      - Начало приема: ${drug.dateStart || "не указано"}
-      - Продолжается ли прием: ${drug.isContinue || "не указано"}
-      - Дополнительные препараты: ${drug.additionalDrugs || "не указано"}
-      - Дата окончания: ${drug.dateEnd || "не указано"}`
+    Другой препарат ${index + 1}: <br />
+      - Название: ${drug.name || "не указано"} <br />
+      - Показание: ${drug.reason || "не указано"} <br />
+      - Доза: ${drug.dose || "не указано"} <br />
+      - Начало приема: ${drug.dateStart || "не указано"} <br />
+      - Продолжается ли прием: ${drug.isContinue || "не указано"} <br />
+      - Дополнительные препараты: ${drug.additionalDrugs || "не указано"} <br />
+      - Дата окончания: ${drug.dateEnd || "не указано"} <br />` 
     )
     .join("\n");
 
-  const diseasesContent = data.diseasesItems
-    .map(
+  const diseasesContent = data?.diseasesItems
+    ?.map(
       (disease, index) => `
-    Заболевание ${index + 1}:
-      - Название: ${disease.name || "не указано"}
-      - Дата начала: ${disease.dateStart || "не указано"}
-      - Статус: ${disease.status || "не указано"}
-      - Проводилось лечение: ${disease.isTreatment || "не указано"}
-      - Описание лечения: ${disease.treatmentDescription || "не указано"}`
+    Заболевание ${index + 1}: <br />
+      - Название: ${disease.name || "не указано"} <br /> 
+      - Дата начала: ${disease.dateStart || "не указано" }<br />
+      - Статус: ${disease.status || "не указано"} <br />
+      - Проводилось лечение: ${disease.isTreatment || "не указано"} <br />
+      - Описание лечения: ${disease.treatmentDescription || "не указано"} <br />`
     )
-    .join("\n");
+    .join("<br />");
 
   return `
-  Данные формы:
-    - Согласие на связь: ${data.isCommunication || "не указано"}
-    - Способ связи: ${data.contactMethod || "не указано"}
-    - Телефон: ${data.phone || "не указано"}
-    - Email: ${data.email || "не указано"}
-    - Является пациентом: ${data.isPatient || "не указано"}
-    - Связь с пациентом: ${data.agent || "не указано"}
-    - Страна: ${JSON.stringify(data.country)}
-    - Препарат Лундбек приобретен в той же стране: ${data.isLundbeckDrugPurchase || "не указано"}
-    - Страна возникновения побочного эффекта: ${data.sideEffectCountry ? JSON.stringify(data.sideEffectCountry) : "не указано"}
-    - Пол: ${data.gender || "не указано"}
-    - Беременность: ${data.isPregnant || "не указано"}
-    - Дата родов: ${data.dateOfBirth || "не указано"}
-    - Неделя родов: ${data.weekOfBirth || "не указано"}
-    - Возраст: ${data.age || "не указано"}
-    - Описание беременности: ${data.description || "не указано"}
-    - Принимал другие препараты: ${data.ateMedicine || "не указано"}
-    - Хотите сообщить о других заболеваниях: ${data.disease || "не указано"}
+  Данные формы: <br />
+    - Согласие на связь: ${data.isCommunication || "не указано"} <br />
+    - Способ связи: ${data.contactMethod || "не указано"} <br />
+    - Телефон: ${data.phone || "не указано"} <br />
+    - Email: ${data.email || "не указано"} <br />
+    - Является пациентом: ${data.isPatient || "не указано"} <br />
+    - Связь с пациентом: ${data.agent || "не указано"} <br />
+    - Страна: ${JSON.stringify(data.country)} <br />
+    - Препарат Лундбек приобретен в той же стране: ${data.isLundbeckDrugPurchase || "не указано"} <br />
+    - Страна возникновения побочного эффекта: ${data.sideEffectCountry ? JSON.stringify(data.sideEffectCountry) : "не указано"} <br />
+    - Пол: ${data.gender || "не указано"} <br />
+    - Беременность: ${data.isPregnant || "не указано"} <br />
+    - Дата родов: ${data.dateOfBirth || "не указано"} <br />
+    - Неделя родов: ${data.weekOfBirth || "не указано"} <br />
+    - Возраст: ${data.age || "не указано"} <br />
+    - Описание беременности: ${data.description || "не указано"} <br />
+    - Принимал другие препараты: ${data.ateMedicine || "не указано"} <br />
+    - Хотите сообщить о других заболеваниях: ${data.disease || "не указано"} <br />
 
-  Препараты:
-  ${drugItemsContent}
+  Препараты: <br /><br />
+  ${drugItemsContent ?? "Нет"}  <br /><br /> 
 
-  Побочные эффекты:
-  ${sideEffectsContent}
+  Побочные эффекты: <br /><br /> 
+  ${sideEffectsContent ?? "Нет"}  <br /><br /> 
 
-  Другие препараты:
-  ${anyDrugsContent}
+  Другие препараты: <br /><br />
+  ${anyDrugsContent ?? "Нет"}  <br /><br /> 
 
-  Заболевания:
-  ${diseasesContent}
+  Заболевания:<br /><br />
+  ${diseasesContent ?? "Нет"}  <br /><br /> 
   `;
 }

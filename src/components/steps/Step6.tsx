@@ -65,7 +65,7 @@ export const Step6: React.FC = () => {
         control={control}
         render={({ field, fieldState }) => (
           <div className="mt-4">
-            {fields.map((item, index) => (
+            {fields?.map((item, index) => (
               <Box key={item.id} className="mt-4 border p-2 rounded grid grid-cols-2 gap-4">
                 <Controller
                   name={`diseasesItems.${index}.name`}

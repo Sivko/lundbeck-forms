@@ -19,9 +19,14 @@ import { Step5 } from "./components/steps/Step5";
 import { Step6 } from "./components/steps/Step6";
 
 import dataToMessage, { DataToSend } from "./dataToMessage";
+import SuccessMsg from "./result/SuccessMsg";
+import ErrorSend from "./result/ErrorSend";
 
 const QuizForm: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const [response, setResponse] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false)
+
   const methods = useForm<FormData>({
     defaultValues: {},
   });
@@ -35,17 +40,42 @@ const QuizForm: React.FC = () => {
     }
   };
 
-  const allValues = methods.watch();
+  // const allValues = methods.watch();
 
 
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
   const onSubmit = async (data: FormData) => {
+    setIsLoading(true)
     const dataJson = JSON.stringify(data);
     const object = JSON.parse(dataJson) as DataToSend;
     console.log("Отправленные данные:", dataToMessage(object));
-    
+    const res = await fetch('https://app.salesap.ru/web_forms/order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        'contact[general_phone]': object?.phone ?? "",
+        'contact[email]': object?.email ?? "",
+        'order[name]': 'Форма о побочных эффектах',
+        'order[description]': dataToMessage(object),
+        'source_id': '366321',
+        'redirect_url': '',
+        'token': '8a00d4d45ce986fc8626ca41819568ed444',
+        'responsible_id': '76790',
+      }),
+    }).then(response => response.json());
+    setResponse(res)
   };
+
+
+  if (response !== null) {
+    if (response.status === "success") {
+      return <SuccessMsg />
+    }
+    return <ErrorSend />
+  }
 
   return (
     <div className="container mx-auto py-10">
@@ -74,8 +104,8 @@ const QuizForm: React.FC = () => {
               </Button>
             )}
             {activeStep === steps - 1 && (
-              <Button type="submit" variant="contained" color="primary">
-                Отправить
+              <Button type={isLoading ? "button" : "submit"} disabled={isLoading} variant="contained" color="primary">
+                {isLoading ? "Отправка..." : "Отправить"}
               </Button>
             )}
           </Box>
