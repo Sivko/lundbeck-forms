@@ -1,0 +1,31 @@
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.docker=true"
+      - "--api.insecure=false" # Оставьте true только для тестирования
+      - "--certificatesResolvers.letsEncrypt.acme.tlsChallenge=true"
+      - "--certificatesResolvers.letsEncrypt.acme.email=limpopo113@gmail.com"
+      - "--certificatesResolvers.letsEncrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+
+  app:
+    container_name: app
+    build:
+      context: .  # Указывает на директорию с Dockerfile
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.my-app.rule=Host(`62.113.98.7`)"
+      - "traefik.http.routers.my-app.entrypoints=websecure"
+      - "traefik.http.routers.my-app.tls.certresolver=letsEncrypt"
+    volumes:
+      - ./build:/usr/share/nginx/html
