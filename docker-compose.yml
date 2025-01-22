@@ -1,26 +1,19 @@
-version: '3.8'
-
+version: "3.7"
 services:
   nginx:
     image: nginx:latest
-    container_name: nginx
+    container_name: nginx_server
     ports:
       - "80:80"
       - "443:443"
     volumes:
+      - ./nginx:/etc/nginx/conf.d
       - ./build:/usr/share/nginx/html
-      - ./config/mime.types:/etc/nginx/mime.types
-      - ./config/nginx.conf:/etc/nginx/nginx.conf
-      - ./config/default.conf:/etc/nginx/conf.d/default.conf
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-
-# COPY ./config/mime.types /etc/nginx/mime.types
-# COPY ./config/nginx.conf /etc/nginx/nginx.conf
-# COPY ./config/default.conf /etc/nginx/conf.d/default.conf
-
     depends_on:
       - certbot
+    restart: always
 
   certbot:
     image: certbot/certbot:latest
@@ -28,24 +21,5 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    entrypoint: >
-      sh -c "trap exit TERM; while :; do sleep 6h & wait $${!}; certbot renew; done"
-
-  certbot-init:
-    image: certbot/certbot:latest
-    container_name: certbot-init
-    depends_on:
-      - nginx
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    entrypoint: >
-      sh -c "
-      certbot certonly --webroot -w /var/www/certbot \
-        --agree-tos --no-eff-email \
-        --email limpopo113@gmail.com \
-        -d 62.113.98.7;"
-
-volumes:
-  certbot_conf:
-  certbot_www:
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 1; done'"
+    restart: always
