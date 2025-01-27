@@ -133,6 +133,7 @@ export const Step1: React.FC = () => {
               <>
                 <PhoneInput
                   inputStyle={{ width: "100%", height: "60px" }}
+                  country={"ru"}
                   {...field}
                 />
                 {fieldState.error && <p className="text-[#d32f2f]">{fieldState.error.message}</p>}
