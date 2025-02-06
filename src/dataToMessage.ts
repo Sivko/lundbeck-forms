@@ -5,7 +5,10 @@ export interface DataToSend {
   email: string;
   isPatient: string;
   agent: string;
-  country: {};
+  country: {
+    label: string;
+    value: string;
+  };
   isLundbeckDrugPurchase: string;
   sideEffectCountry: {};
   gender: string;
@@ -15,7 +18,10 @@ export interface DataToSend {
   description: string;
   age: number | string;
   drugItems?: {
-    drugName: {};
+    drugName: {
+      label: string;
+      value: string;
+    };
     drugNumber: string;
     purposeDrug: string;
     periodicity: string;
@@ -57,7 +63,7 @@ export default function generateEmailContent(data: DataToSend): string {
     ?.map(
       (item, index) => `
     Препарат ${index + 1}: <br />
-      - Название: ${item.drugName ? JSON.stringify(item.drugName) : "не указано"} <br />
+      - Название: ${item.drugName ? JSON.stringify(item.drugName?.value) : "не указано"} <br />
       - Номер: ${item.drugNumber || "не указано"} <br />
       - Показание: ${item.purposeDrug || "не указано"} <br />
       - Периодичность: ${item.periodicity} (${item.customPeriodicity || "не указано"}) <br />
@@ -113,7 +119,7 @@ export default function generateEmailContent(data: DataToSend): string {
     - Email: ${data.email || "не указано"} <br />
     - Является пациентом: ${data.isPatient || "не указано"} <br />
     - Связь с пациентом: ${data.agent || "не указано"} <br />
-    - Страна: ${JSON.stringify(data.country)} <br />
+    - Страна: ${data.country?.value} <br />
     - Препарат Лундбек приобретен в той же стране: ${data.isLundbeckDrugPurchase || "не указано"} <br />
     - Страна возникновения побочного эффекта: ${data.sideEffectCountry ? JSON.stringify(data.sideEffectCountry) : "не указано"} <br />
     - Пол: ${data.gender || "не указано"} <br />
